@@ -72,7 +72,7 @@ function Challenge() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (complete === true) navigate("/vis");
+    // if (complete === true) navigate("/vis");
   }, [complete, navigate]);
 
   const handleKeyDown = useCallback(
@@ -114,7 +114,9 @@ function Challenge() {
         // space will move between words, as long as 1 character has been typed
         // make sure we type at least 1 char in current word before moving on
         const { history } = targets[targetIndex];
-        const typedChars = history.flatMap((c) => (c.backspace ? [] : true));
+        const typedChars = history.flatMap((c) =>
+          c.key === "Backspace" ? [] : true
+        );
         if (typedChars.length > 0 && targetIndex < targets.length - 1)
           setTargetIndex(targetIndex + 1);
       } else if (key === "Backspace") {
@@ -155,7 +157,7 @@ function Challenge() {
 
   const tapeInstance = tape(targets, targetIndex);
 
-  const testLengths = [10, 25, 50, 100];
+  const testLengths = [1, 10, 25, 50, 100];
   const testLengthButtons = () =>
     testLengths.map((l) => (
       <button

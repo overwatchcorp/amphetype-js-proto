@@ -1,7 +1,6 @@
 export interface TypingEvent {
   key: string;
   correct: boolean;
-  backspace: boolean;
   timestamp: number;
 }
 
