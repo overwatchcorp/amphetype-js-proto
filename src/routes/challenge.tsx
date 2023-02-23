@@ -29,12 +29,14 @@ const tape = (words: Word[], targetIndex: number) => {
             (l: string, k: number) =>
               k === 0 && i === targetIndex ? (
                 <span
-                  className={l === " " ? "tape-cursor pe-2" : "tape-cursor"}
+                  className={
+                    l === " " ? "tape-cursor tape-space" : "tape-cursor"
+                  }
                 >
                   {l}
                 </span>
               ) : (
-                <span className={l === " " ? "pe-2" : ""}>{l}</span>
+                <span className={l === " " ? "tape-space" : ""}>{l}</span>
               )
           )}
         </div>

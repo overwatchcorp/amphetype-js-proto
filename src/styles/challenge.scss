@@ -30,12 +30,10 @@
   .tape-incorrect {
     color: red;
   }
-}
-.tape-character {
-  display: block;
-  font-family: monospace;
-  font-size: 1.4rem;
-}
-.tape-cursor {
-  background-color: rgba(255, 0, 0, 0.2);
+  .tape-space {
+    padding-left: 1rem;
+  }
+  .tape-cursor {
+    background-color: rgba(255, 0, 0, 0.2);
+  }
 }
