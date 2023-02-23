@@ -6,13 +6,14 @@ import { Word, TypingEvent } from "../types";
 import dumpSession from "../processing/dumpSession";
 
 const tape = (words: Word[], targetIndex: number) => {
-  return words.map((word): ReactElement => {
+  return words.map((word, i): ReactElement => {
     const { target, visibleHistory } = word;
+    console.log();
     const wordDisplay = (
       <div className="tape-word">
         <div>
-          {visibleHistory.split("").map((char: string, i: number) => {
-            const correct = target[i] === char;
+          {visibleHistory.split("").map((char: string, j: number) => {
+            const correct = target[j] === char;
             return (
               <div
                 className={`${correct ? "tape-wordinput" : "tape-incorrect"}`}
@@ -24,7 +25,18 @@ const tape = (words: Word[], targetIndex: number) => {
         </div>
         <div>
           {/* display remainder of target */}
-          {target.slice(visibleHistory.length)}
+          {[...target.slice(visibleHistory.length).split(""), " "].map(
+            (l: string, k: number) =>
+              k === 0 && i === targetIndex ? (
+                <span
+                  className={l === " " ? "tape-cursor pe-2" : "tape-cursor"}
+                >
+                  {l}
+                </span>
+              ) : (
+                <span className={l === " " ? "pe-2" : ""}>{l}</span>
+              )
+          )}
         </div>
       </div>
     );
@@ -50,7 +62,10 @@ function Challenge() {
   const [targetIndex, setTargetIndex]: [number, Function] = useState(0);
 
   // generate new test of testLength length whenever testLength changes
-  useEffect(() => setTargets(generateString(testLength)), [testLength]);
+  useEffect(() => {
+    // setTargetIndex(0);
+    // setTargets(generateString(testLength));
+  }, [testLength]);
 
   const navigate = useNavigate();
 

@@ -1,8 +1,8 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./styles/App.scss";
-import Challenge from "./routes/challenge";
-import Vis from "./routes/vis";
+import Challenge from "./routes/Challenge";
+import Vis from "./routes/Vis";
 
 const router = createBrowserRouter([
   {
