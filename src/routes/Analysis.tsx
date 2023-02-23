@@ -1,22 +1,11 @@
-import * as dfd from "danfojs";
 import { Link } from "react-router-dom";
-import { localStorageKey } from "../analysis/dumpSession";
+import {
+  localStorageKey,
+  pivotSessionLong,
+} from "../analysis/sessionPostProcessing";
 import RunningWPM from "../components/RunningWPM";
-import { StorageData, Word, LongSessionRow } from "../types";
+import { StorageData } from "../types";
 import "../styles/Analysis.scss";
-
-// create a dataframe where each typing event takes up one row
-const pivotSessionLong = (session: Word[]): dfd.DataFrame => {
-  const rows = session.flatMap(({ target, history }) =>
-    history.map((e) => ({
-      target,
-      ...e,
-    }))
-  ) as LongSessionRow[];
-
-  const out = new dfd.DataFrame(rows);
-  return out;
-};
 
 const Vis = () => {
   // get all of the sessions so far
@@ -30,7 +19,6 @@ const Vis = () => {
     (a, b) => parseInt(b) - parseInt(a)
   );
   const latestSession = sessions[sessionKeys[0]];
-
   const session = pivotSessionLong(latestSession);
 
   return (

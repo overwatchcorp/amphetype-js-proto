@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import words from "../corpra/english";
 import "../styles/Challenge.scss";
 import { Word, TypingEvent } from "../types";
-import dumpSession from "../analysis/dumpSession";
+import { dumpSession } from "../analysis/sessionPostProcessing";
 
 const tape = (words: Word[], targetIndex: number) => {
   return words.map((word, i): ReactElement => {

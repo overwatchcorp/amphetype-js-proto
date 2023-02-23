@@ -21,7 +21,7 @@ const RunningWPM = ({ session }: { session: DataFrame }): ReactElement => {
       type: "value",
       name: "WPM",
       nameLocation: "center",
-      nameGap: 26,
+      nameGap: 32,
     },
     series: [
       {

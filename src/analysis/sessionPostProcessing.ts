@@ -1,8 +1,9 @@
-import { StorageData, Word } from "../types";
+import * as dfd from "danfojs";
+import { LongSessionRow, StorageData, Word } from "../types";
 
 export const localStorageKey = "amphetype-proto-storage";
 
-const dumpSession = (session: Word[]): void => {
+export const dumpSession = (session: Word[]): void => {
   console.log(session);
   const oldRawStorage = localStorage.getItem(localStorageKey);
   // if localStorage contains no value, set it to an empty object and restart the function
@@ -17,4 +18,16 @@ const dumpSession = (session: Word[]): void => {
   const newStorage = Object.assign(oldStorage, newData);
   localStorage.setItem(localStorageKey, JSON.stringify(newStorage));
 };
-export default dumpSession;
+
+// create a dataframe where each typing event takes up one row
+export const pivotSessionLong = (session: Word[]): dfd.DataFrame => {
+  const rows = session.flatMap(({ target, history }) =>
+    history.map((e) => ({
+      target,
+      ...e,
+    }))
+  ) as LongSessionRow[];
+
+  const out = new dfd.DataFrame(rows);
+  return out;
+};
