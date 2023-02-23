@@ -1,7 +1,7 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import words from "../corpra/english";
-import "./challenge.scss";
+import "../styles/challenge.scss";
 import { Word, TypingEvent } from "../types";
 import dumpSession from "../processing/dumpSession";
 

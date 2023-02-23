@@ -2,8 +2,6 @@ import * as dfd from "danfojs";
 import { Link } from "react-router-dom";
 import { localStorageKey } from "../processing/dumpSession";
 import { StorageData, Word, LongSessionRow } from "../types";
-import computeRunningWPM from "./vis_modules/compute_wpm";
-import computeWPM from "./vis_modules/wpm";
 
 // create a dataframe where each typing event takes up one row
 const pivotSessionLong = (session: Word[]): dfd.DataFrame => {
@@ -18,7 +16,9 @@ const pivotSessionLong = (session: Word[]): dfd.DataFrame => {
   return out;
 };
 
-const createNGram = (corpus: string[]): string[] => {};
+const createNGram = (corpus: string[]): string[] => {
+  return [];
+};
 
 const Vis = () => {
   // get all of the sessions so far

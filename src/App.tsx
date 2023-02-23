@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./App.scss";
+import "./styles/App.scss";
 import Challenge from "./routes/challenge";
 import Vis from "./routes/vis";
 
