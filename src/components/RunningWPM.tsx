@@ -28,6 +28,7 @@ const RunningWPM = ({ session }: { session: DataFrame }): ReactElement => {
         data: runningWPM,
         type: "line",
         smooth: true,
+        name: "WPM",
       },
     ],
     tooltip: {
