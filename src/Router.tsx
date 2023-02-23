@@ -2,7 +2,7 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./styles/App.scss";
 import Challenge from "./routes/Challenge";
-import Vis from "./routes/Vis";
+import Vis from "./routes/Analysis";
 
 const router = createBrowserRouter([
   {

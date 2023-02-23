@@ -1,7 +1,9 @@
 import * as dfd from "danfojs";
 import { Link } from "react-router-dom";
-import { localStorageKey } from "../processing/dumpSession";
+import { localStorageKey } from "../analysis/dumpSession";
+import RunningWPM from "../components/RunningWPM";
 import { StorageData, Word, LongSessionRow } from "../types";
+import "../styles/Analysis.scss";
 
 // create a dataframe where each typing event takes up one row
 const pivotSessionLong = (session: Word[]): dfd.DataFrame => {
@@ -14,10 +16,6 @@ const pivotSessionLong = (session: Word[]): dfd.DataFrame => {
 
   const out = new dfd.DataFrame(rows);
   return out;
-};
-
-const createNGram = (corpus: string[]): string[] => {
-  return [];
 };
 
 const Vis = () => {
@@ -33,11 +31,13 @@ const Vis = () => {
   );
   const latestSession = sessions[sessionKeys[0]];
 
-  // const sessionPivoted = pivotSessionLong(latestSession);
-  // const runningWPM = computeRunningWPM(sessionPivoted);
+  const session = pivotSessionLong(latestSession);
 
   return (
     <div>
+      <div>
+        <RunningWPM session={session} />
+      </div>
       <Link to="/" className="btn btn-success mt-2">
         test again
       </Link>

@@ -1,9 +1,9 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import words from "../corpra/english";
-import "../styles/challenge.scss";
+import "../styles/Challenge.scss";
 import { Word, TypingEvent } from "../types";
-import dumpSession from "../processing/dumpSession";
+import dumpSession from "../analysis/dumpSession";
 
 const tape = (words: Word[], targetIndex: number) => {
   return words.map((word, i): ReactElement => {
