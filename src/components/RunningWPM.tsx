@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import ECharts from "echarts-for-react";
 import { DataFrame } from "danfojs";
-import computeRunningWPM from "../analysis/runningWPM";
+import computeRunningWPM from "../analysis/computeRunningWPM";
 
 const RunningWPM = ({ session }: { session: DataFrame }): ReactElement => {
   // blah
