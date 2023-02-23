@@ -63,8 +63,8 @@ function Challenge() {
 
   // generate new test of testLength length whenever testLength changes
   useEffect(() => {
-    // setTargetIndex(0);
-    // setTargets(generateString(testLength));
+    setTargetIndex(0);
+    setTargets(generateString(testLength));
   }, [testLength]);
 
   const navigate = useNavigate();
@@ -169,7 +169,7 @@ function Challenge() {
 
   return (
     <div className="app">
-      <div className="btn-group">{testLengthButtons()}</div>
+      <div className="btn-group mb-3">{testLengthButtons()}</div>
       {complete ? <div>challenge complete!</div> : null}
       <div className="tape-glue">
         <div className="">{tapeInstance}</div>
