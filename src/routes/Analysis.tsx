@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { pivotSessionLong } from "../analysis/sessionPostProcessing";
 import dbManagerInstance from "../analysis/sessionStorage";
 import RunningWPM from "../components/RunningWPM";
+import WPM from "../components/WPM";
 import "../styles/Analysis.scss";
 
 const Vis = () => {
@@ -30,6 +31,7 @@ const Vis = () => {
     <div>
       {session ? (
         <div>
+          <WPM session={session} />
           <RunningWPM session={session} />
         </div>
       ) : null}
