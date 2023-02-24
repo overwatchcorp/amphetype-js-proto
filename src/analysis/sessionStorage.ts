@@ -1,6 +1,7 @@
 import { createRxDatabase, RxDatabase, addRxPlugin } from "rxdb";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
+import { RxDBJsonDumpPlugin } from "rxdb/plugins/json-dump";
 import { sessionSchema } from "../types/sessionSchema";
 import to from "await-to-js";
 
@@ -18,6 +19,8 @@ class DatabaseManager {
 
     // take this out when we eventually build a production version
     addRxPlugin(RxDBDevModePlugin);
+    // used to dump the entire DB to console haha
+    addRxPlugin(RxDBJsonDumpPlugin);
 
     const [dbErr, db] = await to(
       createRxDatabase({
