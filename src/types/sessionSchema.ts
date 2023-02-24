@@ -10,6 +10,7 @@ export const sessionSchemaLiteral = {
   type: "object",
   primaryKey: "uuid",
   properties: {
+    // use UUIDv4 for consistency
     uuid: {
       type: "string",
       maxLength: 36,
@@ -17,6 +18,7 @@ export const sessionSchemaLiteral = {
     timestamp: {
       type: "number",
       // these are the limits of the milliseconds since UNIX epoch
+      // min/max/multipleOf are necessary to use as an index in RxDB
       minimum: -8640000000000000,
       maximum: 8640000000000000,
       multipleOf: 1,
