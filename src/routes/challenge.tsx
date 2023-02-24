@@ -8,7 +8,6 @@ import { dumpSession } from "../analysis/sessionPostProcessing";
 const tape = (words: Word[], targetIndex: number) => {
   return words.map((word, i): ReactElement => {
     const { target, visibleHistory } = word;
-    console.log();
     const wordDisplay = (
       <div className="tape-word">
         <div>
