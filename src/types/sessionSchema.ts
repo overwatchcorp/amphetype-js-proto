@@ -62,8 +62,8 @@ export const sessionSchemaLiteral = {
 } as const;
 const sessionTyped = toTypedRxJsonSchema(sessionSchemaLiteral);
 // get the document types from the schema
-type sessionType = ExtractDocumentTypeFromTypedRxJsonSchema<
+export type SessionType = ExtractDocumentTypeFromTypedRxJsonSchema<
   typeof sessionTyped
 >;
 // create the RxJsonSchema instance w/ the types
-export const sessionSchema: RxJsonSchema<sessionType> = sessionSchemaLiteral;
+export const sessionSchema: RxJsonSchema<SessionType> = sessionSchemaLiteral;
