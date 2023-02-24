@@ -61,7 +61,7 @@ const Vis = () => {
       key={uuid}
       className={`analysis-test-listitem btn btn-${
         uuid === selectedSessionUUID ? "" : "outline-"
-      }secondary d-block mb-1`}
+      }dark d-block mb-1`}
       onClick={() => selectSession(uuid)}
     >
       {new Date(timestamp).toLocaleString()}
