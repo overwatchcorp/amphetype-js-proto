@@ -3,6 +3,8 @@ import { DataFrame } from "danfojs";
 const computeRunningWPM = (session: DataFrame): number[] => {
   // filter out incorrect key presses
   const correctEvents = session.query(session["correct"]);
+  // if there are no correct events, then stop and return 0
+  if (correctEvents.values.length <= 0) return [0];
   // create groups of 5 characters and measure how long each one took
   const totalRows = correctEvents.shape[0];
   const wpmGroupLabels = Array.from(Array(totalRows)).map((_, i) =>
