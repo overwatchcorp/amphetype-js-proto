@@ -75,10 +75,18 @@ function Challenge() {
     if (complete === true) navigate("/vis");
   }, [complete, navigate]);
 
+  // finishing the session needs to be it's own func since we can't have an async
+  // function as the argument for useCallback
+  const dumpSessionAndFinish = async () => {
+    await dumpSession(targets);
+    setComplete(true);
+  };
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent): void => {
       // ignore input if we're done
       if (complete) return;
+
       const { key } = e;
       // filter out non-modifier keypresses by name length
       const recordKeypress = key.length === 1 && key !== " ";
@@ -107,8 +115,7 @@ function Challenge() {
           visibleHistory.length === target.length - 1 &&
           complete === false
         ) {
-          dumpSession(targets);
-          setComplete(true);
+          dumpSessionAndFinish();
         }
       } else if (key === " ") {
         // space will move between words, as long as 1 character has been typed
