@@ -72,7 +72,7 @@ function Challenge() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (complete === true) navigate("/vis");
+    if (complete === true) navigate("/vis");
   }, [complete, navigate]);
 
   const handleKeyDown = useCallback(
