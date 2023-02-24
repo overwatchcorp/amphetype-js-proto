@@ -2,6 +2,7 @@ import { createRxDatabase, RxDatabase, addRxPlugin } from "rxdb";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { sessionSchema } from "../types/sessionSchema";
+import to from "await-to-js";
 
 // we need to manage the DB instance to prevent creating duplicates
 class DatabaseManager {
@@ -18,10 +19,26 @@ class DatabaseManager {
     // take this out when we eventually build a production version
     addRxPlugin(RxDBDevModePlugin);
 
-    const db = await createRxDatabase({
-      name: "amphetypedb",
-      storage: getRxStorageDexie(),
-    });
+    const [dbErr, db] = await to(
+      createRxDatabase({
+        name: "amphetypedb",
+        storage: getRxStorageDexie(),
+      })
+    );
+
+    if (dbErr) {
+      console.warn(
+        "warning! the database creation failed—did you attempt to create an instance when one already exists?",
+        dbErr
+      );
+      if (this._dbInstance !== undefined) {
+        console.warn("returning existing instance of DB!");
+        return this._dbInstance;
+      }
+    }
+    if (db === undefined)
+      throw new Error("fatal error: database creation failed!");
+
     await db.addCollections({
       sessions: {
         schema: sessionSchema,
