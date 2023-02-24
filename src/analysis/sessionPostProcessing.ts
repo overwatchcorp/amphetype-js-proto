@@ -1,11 +1,11 @@
 import * as dfd from "danfojs";
 import { LongSessionRow, StorageData, Word } from "../types";
-import { getDB } from "./sessionStorage";
+import dbManager from "./sessionStorage";
 
 export const localStorageKey = "amphetype-proto-storage";
 
 export const dumpSession = async (session: Word[]): Promise<void> => {
-  const db = await getDB();
+  const db = await dbManager.getDB();
 
   await db.sessions.insert({
     timestamp: `${Date.now()}`,
