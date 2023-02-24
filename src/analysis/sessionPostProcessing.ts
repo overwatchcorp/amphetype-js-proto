@@ -1,4 +1,5 @@
 import * as dfd from "danfojs";
+import { v4 as uuidv4 } from "uuid";
 import { LongSessionRow, StorageData, Word } from "../types";
 import dbManager from "./sessionStorage";
 
@@ -8,7 +9,8 @@ export const dumpSession = async (session: Word[]): Promise<void> => {
   const db = await dbManager.getDB();
 
   await db.sessions.insert({
-    timestamp: `${Date.now()}`,
+    uuid: uuidv4(),
+    timestamp: Date.now(),
     history: session,
   });
   return;

@@ -8,12 +8,18 @@ export const sessionSchemaLiteral = {
   title: "session schema",
   version: 0,
   type: "object",
-  primaryKey: "timestamp",
+  primaryKey: "uuid",
   properties: {
-    timestamp: {
+    uuid: {
       type: "string",
-      // will always be output of Date.now()
-      maxLength: 16,
+      maxLength: 36,
+    },
+    timestamp: {
+      type: "number",
+      // these are the limits of the milliseconds since UNIX epoch
+      minimum: -8640000000000000,
+      maximum: 8640000000000000,
+      multipleOf: 1,
     },
     history: {
       type: "array",
@@ -49,7 +55,8 @@ export const sessionSchemaLiteral = {
       },
     },
   },
-  required: ["timestamp", "history"],
+  required: ["uuid", "timestamp", "history"],
+  indexes: ["timestamp"],
 } as const;
 const sessionTyped = toTypedRxJsonSchema(sessionSchemaLiteral);
 // get the document types from the schema
