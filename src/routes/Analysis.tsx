@@ -1,31 +1,39 @@
+import { DataFrame } from "danfojs";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  localStorageKey,
-  pivotSessionLong,
-} from "../analysis/sessionPostProcessing";
+import { pivotSessionLong } from "../analysis/sessionPostProcessing";
+import dbManagerInstance from "../analysis/sessionStorage";
 import RunningWPM from "../components/RunningWPM";
-import { StorageData } from "../types";
 import "../styles/Analysis.scss";
+import { Word } from "../types";
 
 const Vis = () => {
-  // get all of the sessions so far
-  let rawStorage = localStorage.getItem(localStorageKey);
-  if (rawStorage === null) {
-    rawStorage = "{}";
-  }
-  // sort them by most recent to least recent
-  const sessions = JSON.parse(rawStorage) as StorageData;
-  const sessionKeys = Object.keys(sessions).sort(
-    (a, b) => parseInt(b) - parseInt(a)
-  );
-  const latestSession = sessions[sessionKeys[0]];
-  const session = pivotSessionLong(latestSession);
+  const [session, setSession]: [DataFrame | undefined, Function] = useState();
 
+  useEffect(() => {
+    const fetchSessions = async () => {
+      const db = await dbManagerInstance.getDB();
+      // get the latest session
+      const res = await db.sessions
+        .findOne({
+          sort: [{ timestamp: "desc" }],
+        })
+        .exec();
+      const history = res.get("history");
+      const c = pivotSessionLong(history);
+      setSession(c);
+    };
+    fetchSessions();
+  }, []);
+
+  // const sessions = await
   return (
     <div>
-      <div>
-        <RunningWPM session={session} />
-      </div>
+      {session ? (
+        <div>
+          <RunningWPM session={session} />
+        </div>
+      ) : null}
       <Link to="/" className="btn btn-success mt-2">
         test again
       </Link>
