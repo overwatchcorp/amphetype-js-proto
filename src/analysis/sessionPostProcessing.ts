@@ -1,6 +1,6 @@
 import * as dfd from "danfojs";
 import { v4 as uuidv4 } from "uuid";
-import { LongSessionRow, StorageData, Word } from "../types";
+import { LongSessionRow, Word } from "../types";
 import dbManager from "./sessionStorage";
 
 export const localStorageKey = "amphetype-proto-storage";

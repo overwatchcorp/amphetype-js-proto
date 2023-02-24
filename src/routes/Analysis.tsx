@@ -5,7 +5,6 @@ import { pivotSessionLong } from "../analysis/sessionPostProcessing";
 import dbManagerInstance from "../analysis/sessionStorage";
 import RunningWPM from "../components/RunningWPM";
 import "../styles/Analysis.scss";
-import { Word } from "../types";
 
 const Vis = () => {
   const [session, setSession]: [DataFrame | undefined, Function] = useState();

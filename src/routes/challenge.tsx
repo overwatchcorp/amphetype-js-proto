@@ -75,15 +75,14 @@ function Challenge() {
     if (complete === true) navigate("/vis");
   }, [complete, navigate]);
 
-  // finishing the session needs to be it's own func since we can't have an async
-  // function as the argument for useCallback
-  const dumpSessionAndFinish = async () => {
-    await dumpSession(targets);
-    setComplete(true);
-  };
-
   const handleKeyDown = useCallback(
     (e: KeyboardEvent): void => {
+      // finishing the session needs to be it's own func since we can't have an async
+      // function as the argument for useCallback
+      const dumpSessionAndFinish = async () => {
+        await dumpSession(targets);
+        setComplete(true);
+      };
       // ignore input if we're done
       if (complete) return;
 
