@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { pivotSessionLong } from "../analysis/sessionPostProcessing";
 import dbManagerInstance from "../analysis/sessionStorage";
+import Accuracy from "../components/Accuracy";
 import RunningWPM from "../components/RunningWPM";
 import WPM from "../components/WPM";
 import "../styles/Analysis.scss";
@@ -32,6 +33,7 @@ const Vis = () => {
       {session ? (
         <div>
           <WPM session={session} />
+          <Accuracy session={session} />
           <RunningWPM session={session} />
         </div>
       ) : null}
