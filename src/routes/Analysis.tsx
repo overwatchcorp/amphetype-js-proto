@@ -13,7 +13,7 @@ import { SessionType } from "../types/sessionSchema";
 
 const Vis = () => {
   const [sessionList, setSessionList]: [
-    { uuid: string; timestamp: number }[],
+    { uuid: string; timestamp: number; wpm: number; accuracy: number }[],
     Function
   ] = useState([]);
   const [selectedSession, setSelectedSession]: [
@@ -21,7 +21,6 @@ const Vis = () => {
     Function
   ] = useState();
   const [selectedSessionUUID, setSelectedSessionUUID] = useState("");
-
   const selectSession = async (uuid: string): Promise<void> => {
     setSelectedSessionUUID(uuid);
     const db = await dbManagerInstance.getDB();
@@ -45,8 +44,8 @@ const Vis = () => {
         .exec();
       // generate list of all recent sessions
       const newSessionList = res.map((r) => {
-        const { uuid, timestamp } = r.toJSON() as SessionType;
-        return { uuid, timestamp };
+        const { uuid, timestamp, wpm, accuracy } = r.toJSON() as SessionType;
+        return { uuid, timestamp, wpm, accuracy };
       });
       setSessionList(newSessionList);
       // display the most recent test result
@@ -56,22 +55,24 @@ const Vis = () => {
     getSessions();
   }, []);
 
-  const SessionListDisplay = sessionList.map(({ uuid, timestamp }) => (
-    <button
-      key={uuid}
-      className={`analysis-test-listitem btn btn-${
-        uuid === selectedSessionUUID ? "" : "outline-"
-      }dark d-block mb-1`}
-      onClick={() => selectSession(uuid)}
-    >
-      {new Date(timestamp).toLocaleString()}
-    </button>
-  ));
+  const SessionListDisplay = sessionList.map(
+    ({ uuid, timestamp, wpm, accuracy }) => (
+      <button
+        key={uuid}
+        className={`analysis-test-listitem btn btn-${
+          uuid === selectedSessionUUID ? "" : "outline-"
+        }dark d-block mb-1`}
+        onClick={() => selectSession(uuid)}
+      >
+        {new Date(timestamp).toLocaleDateString()}: {wpm} WPM, {accuracy * 100}%
+      </button>
+    )
+  );
 
   return (
     <div>
       <div className="d-flex">
-        <div>{SessionListDisplay}</div>
+        <div className="d-flex flex-column">{SessionListDisplay}</div>
         {selectedSession ? (
           <div>
             <WPM session={selectedSession} />

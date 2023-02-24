@@ -3,15 +3,7 @@ import dbManagerInstance from "../analysis/sessionStorage";
 import "../styles/DevTools.scss";
 
 const DevTools = () => {
-  // haha
-  const dumpDB = async () => {
-    const db = await dbManagerInstance.getDB();
-    const dbDump = await db.exportJSON();
-    console.log(dbDump);
-  };
-
   const [confirmNuke, setConfirmNuke] = useState(0);
-
   // reset to 0 if user doesnt click confirm w/in 5 seconds
   useEffect(() => {
     setTimeout(() => {
@@ -19,9 +11,16 @@ const DevTools = () => {
     }, 5000);
   });
 
+  const dumpDB = async () => {
+    const db = await dbManagerInstance.getDB();
+    const dbDump = await db.exportJSON();
+    console.log(dbDump);
+  };
   const nukeDB = async () => {
     const db = await dbManagerInstance.getDB();
-    await db.remove();
+    const res = await db.remove();
+    console.log(res);
+    setConfirmNuke(2);
     // reload page once we nuke DB so the app can reinit everything
     window.location.reload();
   };
@@ -38,7 +37,6 @@ const DevTools = () => {
               break;
             }
             case 1: {
-              setConfirmNuke(2);
               nukeDB();
               break;
             }

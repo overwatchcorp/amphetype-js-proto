@@ -23,6 +23,12 @@ export const sessionSchemaLiteral = {
       maximum: 8640000000000000,
       multipleOf: 1,
     },
+    accuracy: {
+      type: "number",
+    },
+    wpm: {
+      type: "number",
+    },
     history: {
       type: "array",
       uniqueItems: false,

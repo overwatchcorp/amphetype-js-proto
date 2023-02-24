@@ -133,7 +133,6 @@ function Challenge() {
             ...history,
             {
               key: "Backspace",
-              backspace: true,
               correct: false,
               timestamp: Date.now(),
             } as TypingEvent,
