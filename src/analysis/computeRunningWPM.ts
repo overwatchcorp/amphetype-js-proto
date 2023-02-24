@@ -21,7 +21,6 @@ const computeRunningWPM = (session: DataFrame): number[] => {
     ),
     ...Array.from(Array(remainder)).map(() => Math.trunc(totalRows / 5) - 1),
   ];
-  console.log(wpmGroupLabels);
 
   const annotatedSession = correctEvents.addColumn("wpmGroup", wpmGroupLabels);
   const maxLabel = wpmGroupLabels.slice(-1)[0];
