@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dbManagerInstance from "../analysis/sessionStorage";
 import "../styles/DevTools.scss";
 
@@ -12,10 +12,18 @@ const DevTools = () => {
 
   const [confirmNuke, setConfirmNuke] = useState(0);
 
+  // reset to 0 if user doesnt click confirm w/in 5 seconds
+  useEffect(() => {
+    setTimeout(() => {
+      if (confirmNuke === 1) setConfirmNuke(0);
+    }, 5000);
+  });
+
   const nukeDB = async () => {
     const db = await dbManagerInstance.getDB();
     await db.remove();
-    setTimeout(() => setConfirmNuke(0), 5000);
+    // reload page once we nuke DB so the app can reinit everything
+    window.location.reload();
   };
 
   return (
