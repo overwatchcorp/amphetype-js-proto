@@ -8,7 +8,6 @@ import { dumpSession } from "../analysis/sessionPostProcessing";
 const tape = (words: Word[], targetIndex: number) => {
   return words.map((word, i): ReactElement => {
     const { target, visibleHistory } = word;
-    console.log();
     const wordDisplay = (
       <div className="tape-word">
         <div>
@@ -49,9 +48,14 @@ const tape = (words: Word[], targetIndex: number) => {
 const generateString = (length: number): Word[] => {
   const shuffledCorpus = words.sort(() => 0.5 - Math.random());
   const testString = shuffledCorpus.slice(0, length).join(" ");
-  const initialString = testString
-    .split(" ")
-    .map((w): Word => ({ target: w, visibleHistory: "", history: [] }));
+  const initialString = testString.split(" ").map(
+    (w, i): Word => ({
+      target: w,
+      targetID: i,
+      visibleHistory: "",
+      history: [],
+    })
+  );
   return initialString;
 };
 
@@ -77,24 +81,33 @@ function Challenge() {
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent): void => {
+      // finishing the session needs to be it's own func since we can't have an async
+      // function as the argument for useCallback
+      const dumpSessionAndFinish = async () => {
+        await dumpSession(targets);
+        setComplete(true);
+      };
       // ignore input if we're done
       if (complete) return;
+
       const { key } = e;
       // filter out non-modifier keypresses by name length
       const recordKeypress = key.length === 1 && key !== " ";
 
       if (recordKeypress) {
-        const { target, history, visibleHistory } = targets[targetIndex];
+        const { target, targetID, history, visibleHistory } =
+          targets[targetIndex];
         const newVisibleHistory = `${visibleHistory}${key}`;
         history.push({
           key,
+          targetID,
           correct: target[newVisibleHistory.length - 1] === key,
-          backspace: false,
           timestamp: Date.now(),
         } as TypingEvent);
 
         const newTarget: Word = {
           target,
+          targetID,
           history,
           visibleHistory: newVisibleHistory,
         };
@@ -107,32 +120,35 @@ function Challenge() {
           visibleHistory.length === target.length - 1 &&
           complete === false
         ) {
-          dumpSession(targets);
-          setComplete(true);
+          dumpSessionAndFinish();
         }
       } else if (key === " ") {
         // space will move between words, as long as 1 character has been typed
         // make sure we type at least 1 char in current word before moving on
         const { history } = targets[targetIndex];
-        const typedChars = history.flatMap((c) => (c.backspace ? [] : true));
+        const typedChars = history.flatMap((c) =>
+          c.key === "Backspace" ? [] : true
+        );
         if (typedChars.length > 0 && targetIndex < targets.length - 1)
           setTargetIndex(targetIndex + 1);
       } else if (key === "Backspace") {
         // handle backspace behavior—need to remove last char typed or move back one word
-        const { target, history, visibleHistory } = targets[targetIndex];
+        const { target, targetID, history, visibleHistory } =
+          targets[targetIndex];
         if (visibleHistory.length > 0) {
           // record the backspace to the history
           const newHistory = [
             ...history,
             {
               key: "Backspace",
-              backspace: true,
+              targetID,
               correct: false,
               timestamp: Date.now(),
             } as TypingEvent,
           ];
           const newTarget: Word = {
             target,
+            targetID,
             history: newHistory,
             visibleHistory: visibleHistory.slice(0, visibleHistory.length - 1),
           };
@@ -155,7 +171,7 @@ function Challenge() {
 
   const tapeInstance = tape(targets, targetIndex);
 
-  const testLengths = [10, 25, 50, 100];
+  const testLengths = [1, 10, 25, 50, 100];
   const testLengthButtons = () =>
     testLengths.map((l) => (
       <button
