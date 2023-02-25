@@ -5,6 +5,7 @@ import { RxDocument } from "rxdb";
 import { pivotSessionLong } from "../analysis/sessionPostProcessing";
 import dbManagerInstance from "../analysis/sessionStorage";
 import Accuracy from "../components/Accuracy";
+import NGram from "../components/NGram";
 import RunningWPM from "../components/RunningWPM";
 import WPM from "../components/WPM";
 import "../styles/Analysis.scss";
@@ -70,20 +71,23 @@ const Vis = () => {
   );
 
   return (
-    <div>
+    <div className="mb-4 mt-4">
       <div className="d-flex">
         <div className="d-flex flex-column">{SessionListDisplay}</div>
-        {selectedSession ? (
-          <div>
-            <WPM session={selectedSession} />
-            <Accuracy session={selectedSession} />
-            <RunningWPM session={selectedSession} />
-          </div>
-        ) : null}
+        <div>
+          {selectedSession ? (
+            <div>
+              <WPM session={selectedSession} />
+              <Accuracy session={selectedSession} />
+              <RunningWPM session={selectedSession} />
+              <NGram session={selectedSession} />
+            </div>
+          ) : null}
+          <Link to="/" className="btn btn-success mt-3">
+            test again
+          </Link>
+        </div>
       </div>
-      <Link to="/" className="btn btn-success mt-2">
-        test again
-      </Link>
     </div>
   );
 };

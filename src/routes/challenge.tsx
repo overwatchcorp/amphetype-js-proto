@@ -48,9 +48,14 @@ const tape = (words: Word[], targetIndex: number) => {
 const generateString = (length: number): Word[] => {
   const shuffledCorpus = words.sort(() => 0.5 - Math.random());
   const testString = shuffledCorpus.slice(0, length).join(" ");
-  const initialString = testString
-    .split(" ")
-    .map((w): Word => ({ target: w, visibleHistory: "", history: [] }));
+  const initialString = testString.split(" ").map(
+    (w, i): Word => ({
+      target: w,
+      targetID: i,
+      visibleHistory: "",
+      history: [],
+    })
+  );
   return initialString;
 };
 
@@ -90,17 +95,19 @@ function Challenge() {
       const recordKeypress = key.length === 1 && key !== " ";
 
       if (recordKeypress) {
-        const { target, history, visibleHistory } = targets[targetIndex];
+        const { target, targetID, history, visibleHistory } =
+          targets[targetIndex];
         const newVisibleHistory = `${visibleHistory}${key}`;
         history.push({
           key,
+          targetID,
           correct: target[newVisibleHistory.length - 1] === key,
-          backspace: false,
           timestamp: Date.now(),
         } as TypingEvent);
 
         const newTarget: Word = {
           target,
+          targetID,
           history,
           visibleHistory: newVisibleHistory,
         };
@@ -126,19 +133,22 @@ function Challenge() {
           setTargetIndex(targetIndex + 1);
       } else if (key === "Backspace") {
         // handle backspace behavior—need to remove last char typed or move back one word
-        const { target, history, visibleHistory } = targets[targetIndex];
+        const { target, targetID, history, visibleHistory } =
+          targets[targetIndex];
         if (visibleHistory.length > 0) {
           // record the backspace to the history
           const newHistory = [
             ...history,
             {
               key: "Backspace",
+              targetID,
               correct: false,
               timestamp: Date.now(),
             } as TypingEvent,
           ];
           const newTarget: Word = {
             target,
+            targetID,
             history: newHistory,
             visibleHistory: visibleHistory.slice(0, visibleHistory.length - 1),
           };
