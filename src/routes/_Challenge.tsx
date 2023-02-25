@@ -44,7 +44,7 @@ const tape = (words: Word[], targetIndex: number) => {
     return wordDisplay;
   });
 };
-
+//
 const generateString = (length: number): Word[] => {
   const shuffledCorpus = words.sort(() => 0.5 - Math.random());
   const testString = shuffledCorpus.slice(0, length).join(" ");
