@@ -1,4 +1,4 @@
-import { tidy, mean, select, summarize, sort, desc } from "@tidyjs/tidy";
+import { tidy, mean, select, summarize } from "@tidyjs/tidy";
 import EChartsReact from "echarts-for-react";
 import { pivotSessionLong } from "../analysis/sessionPostProcessing";
 import { Word } from "../types";
@@ -26,11 +26,6 @@ const AggregateSession = ({ sessions }: { sessions: SessionType[] }) => {
   const accSeq = tidy(sessions, select("accuracy")).map(({ accuracy }) =>
     accuracy !== undefined ? accuracy * 100 : -1
   );
-  const maxAcc = tidy(
-    sessions,
-    select("accuracy"),
-    sort([desc("accuracy")])
-  )[0]["accuracy"] as number;
   const chartOpts = {
     xAxis: {
       // generate arbitrary x axis w/ each number representing 1 test
