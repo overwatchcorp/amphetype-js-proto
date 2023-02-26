@@ -44,7 +44,7 @@ const computeRunningWPM = (session: LongSessionRow[]): number[] => {
     }),
     mutate({
       // so we can extrapolate that out to 60 seconds to get WPM
-      wpm: ({ duration }) => Math.round(duration * 60),
+      wpm: ({ duration }) => Math.round(60 / duration),
     })
   );
 
