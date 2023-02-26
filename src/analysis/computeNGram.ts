@@ -136,7 +136,6 @@ const computeNGram = (
   nGramSize: number
 ): nGramFeedback[] => {
   const words = transformIntoWords(session);
-  console.log(words);
   const nGrams = createNGramsFromWords(words, nGramSize);
   return nGrams;
 };
