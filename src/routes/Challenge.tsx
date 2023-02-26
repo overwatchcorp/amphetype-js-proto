@@ -186,7 +186,7 @@ function Challenge() {
     ));
 
   return (
-    <div className="app">
+    <div className="challenge">
       <div className="btn-group mb-3">{testLengthButtons()}</div>
       {complete ? <div>challenge complete!</div> : null}
       <div className="tape-glue">

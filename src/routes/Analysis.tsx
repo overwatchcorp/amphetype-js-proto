@@ -71,9 +71,9 @@ const Vis = () => {
 
   return (
     <div className="mb-4 mt-4">
-      <div className="d-flex">
+      <div className="d-flex align-items-top justify-content-center">
         <div className="d-flex flex-column">{SessionListDisplay}</div>
-        <div>
+        <div className="text-center">
           {selectedSession ? (
             <div>
               <WPM session={selectedSession} />
