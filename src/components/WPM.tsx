@@ -1,7 +1,7 @@
-import { DataFrame } from "danfojs";
 import computeWPM from "../analysis/computeWPM";
+import { LongSessionRow } from "../types";
 
-const WPM = ({ session }: { session: DataFrame }) => {
+const WPM = ({ session }: { session: LongSessionRow[] }) => {
   const wpm = computeWPM(session);
   return <div className="analysis-stat">WPM: {wpm}</div>;
 };

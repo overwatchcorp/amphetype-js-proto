@@ -1,4 +1,3 @@
-import * as dfd from "danfojs";
 import { v4 as uuidv4 } from "uuid";
 import { LongSessionRow, Word } from "../types";
 import computeAccuracy from "./computeAccuracy";
@@ -25,7 +24,7 @@ export const dumpSession = async (session: Word[]): Promise<void> => {
 };
 
 // create a dataframe where each typing event takes up one row
-export const pivotSessionLong = (session: Word[]): dfd.DataFrame => {
+export const pivotSessionLong = (session: Word[]): LongSessionRow[] => {
   const rows = session.flatMap(({ target, history }) =>
     history.map((e) => ({
       target,
@@ -33,6 +32,6 @@ export const pivotSessionLong = (session: Word[]): dfd.DataFrame => {
     }))
   ) as LongSessionRow[];
 
-  const out = new dfd.DataFrame(rows);
+  const out = rows;
   return out;
 };

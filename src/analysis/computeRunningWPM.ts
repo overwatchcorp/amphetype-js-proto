@@ -1,58 +1,54 @@
-import { DataFrame } from "danfojs";
+import {
+  tidy,
+  filter,
+  mutate,
+  groupBy,
+  summarize,
+  first,
+  last,
+} from "@tidyjs/tidy";
+import { LongSessionRow } from "../types";
 
-const computeRunningWPM = (session: DataFrame): number[] => {
+const computeRunningWPM = (session: LongSessionRow[]): number[] => {
   // filter out incorrect key presses
-  const correctEvents = session.query(
-    session["key"].values.map((k: string) => k !== "Backspace")
+  const correctEvents = tidy(
+    session,
+    filter(({ key }) => key !== "Backspace")
   );
   // if there are not enough correct events, then stop and return -1
-  if (correctEvents.values.length < 5) return [-1];
+  if (correctEvents.length < 5) return [-1];
   // create groups of 5 characters and measure how long each one took
-  const totalRows = correctEvents.shape[0];
-  // combine the last two groups so there's enough data
-  const remainder = totalRows % 5;
-  const wpmGroupLabelsWithoutRemainder = Array.from(Array(totalRows)).map(
-    (_, i) => Math.trunc(i / 5)
+  // to prevent having too small a last group, we'll only take n rows up to a number divisible by 5
+  const lastGroup = Math.trunc(correctEvents.length / 5);
+  let rowNum = 0;
+  const annotatedSession = tidy(
+    correctEvents,
+    mutate({
+      wpmGroup: () => {
+        const group = Math.trunc(rowNum / 5);
+        rowNum += 1;
+        return group;
+      },
+    }),
+    filter(({ wpmGroup }) => wpmGroup < lastGroup)
   );
-  const wpmGroupLabels = [
-    ...wpmGroupLabelsWithoutRemainder.slice(
-      0,
-      wpmGroupLabelsWithoutRemainder.length - remainder
-    ),
-    ...Array.from(Array(remainder)).map(() => Math.trunc(totalRows / 5) - 1),
-  ];
 
-  const annotatedSession = correctEvents.addColumn("wpmGroup", wpmGroupLabels);
-  const maxLabel = wpmGroupLabels.slice(-1)[0];
-  // iterate through row groups and get duration
-  const runningWPMValues = Array.from(new Array(maxLabel)).map(
-    (_, i): number => {
-      // grab the timestamp col for the 5 character group
-      const mask = annotatedSession["wpmGroup"].eq(i);
-      let queryRes;
-      try {
-        queryRes = annotatedSession.query(mask);
-      } catch (err) {
-        console.error("failed to query dataframe!", {
-          err,
-          targetedWPMGroup: i,
-          mask,
-          annotatedSession,
-        });
-        return -1;
-      }
-      const group = queryRes["timestamp"];
-      // compute group duration in seconds
-      const tStart = group.min({ axis: 1 });
-      const tEnd = group.max({ axis: 1 });
-      // this is the duration it took to type 5 characters
-      const duration = (tEnd - tStart) / 60000;
-      // so we can extrapolate that out to 1 minute to get the instantaneous WPM
-      const groupWPM = duration * 6000;
-      return Math.round(groupWPM);
-    }
+  const runningWPMValues = tidy(
+    annotatedSession,
+    groupBy("wpmGroup", [
+      summarize({ start: first("timestamp"), end: last("timestamp") }),
+    ]),
+    mutate({
+      // this is the time it took to type 5 characters ie one word
+      duration: ({ start, end }) => (end - start) / 1000,
+    }),
+    mutate({
+      // so we can extrapolate that out to 60 seconds to get WPM
+      wpm: ({ duration }) => Math.round(duration * 60),
+    })
   );
-  return runningWPMValues;
+
+  return runningWPMValues.map(({ wpm }) => wpm);
 };
 
 export default computeRunningWPM;

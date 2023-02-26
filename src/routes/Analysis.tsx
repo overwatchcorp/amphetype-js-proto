@@ -1,4 +1,3 @@
-import { DataFrame } from "danfojs";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { RxDocument } from "rxdb";
@@ -9,7 +8,7 @@ import NGram from "../components/NGram";
 import RunningWPM from "../components/RunningWPM";
 import WPM from "../components/WPM";
 import "../styles/Analysis.scss";
-import { Word } from "../types";
+import { LongSessionRow, Word } from "../types";
 import { SessionType } from "../types/sessionSchema";
 
 const Vis = () => {
@@ -18,7 +17,7 @@ const Vis = () => {
     Function
   ] = useState([]);
   const [selectedSession, setSelectedSession]: [
-    DataFrame | undefined,
+    LongSessionRow[] | undefined,
     Function
   ] = useState();
   const [selectedSessionUUID, setSelectedSessionUUID] = useState("");

@@ -1,15 +1,18 @@
-import { DataFrame } from "danfojs";
+import { tidy, filter, tally } from "@tidyjs/tidy";
+import { LongSessionRow } from "../types";
 
-const computeAccuracy = (session: DataFrame): number => {
-  // get everything that ins't backspace
-  const mask = session["key"].values.map((k: string) => k !== "Backspace");
-  const correctMask = session.query(mask)["correct"].values;
-  const incorrectMask = session
-    .query(mask)
-    ["correct"].values.map((v: boolean) => v === false);
-  const correct = session.query(correctMask).values.length;
-  const incorrect = session.query(incorrectMask).values.length;
-  // console.log(correctMask, incorrectMask);
+const computeAccuracy = (session: LongSessionRow[]): number => {
+  const correct: number = tidy(
+    session,
+    filter(({ correct }) => correct === true),
+    tally()
+  )[0]["n"];
+  const incorrect: number = tidy(
+    session,
+    filter(({ correct, key }) => correct === false && key !== "Backspace"),
+    tally()
+  )[0]["n"];
+
   return +(correct / (correct + incorrect)).toFixed(2);
 };
 
