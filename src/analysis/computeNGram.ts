@@ -1,4 +1,4 @@
-import { tidy, filter, select, map } from "@tidyjs/tidy";
+import { tidy, filter, select } from "@tidyjs/tidy";
 import { createFinalOutput } from "../bin/createFinalOutput";
 import { pullColumns } from "../bin/pullColumns";
 import { LongSessionRow, nGramFeedback, WordPerformance } from "../types";
