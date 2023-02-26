@@ -4,6 +4,7 @@ import { RxDocument } from "rxdb";
 import { pivotSessionLong } from "../analysis/sessionPostProcessing";
 import dbManagerInstance from "../analysis/sessionStorage";
 import Accuracy from "../components/Accuracy";
+import Header from "../components/Header";
 import NGram from "../components/NGram";
 import RunningWPM from "../components/RunningWPM";
 import WPM from "../components/WPM";
@@ -70,21 +71,24 @@ const Vis = () => {
   );
 
   return (
-    <div className="mb-4 mt-4">
-      <div className="d-flex align-items-top justify-content-center">
-        <div className="d-flex flex-column">{SessionListDisplay}</div>
-        <div className="text-center">
-          {selectedSession ? (
-            <div>
-              <WPM session={selectedSession} />
-              <Accuracy session={selectedSession} />
-              <RunningWPM session={selectedSession} />
-              <NGram session={selectedSession} />
-            </div>
-          ) : null}
-          <Link to="/" className="btn btn-success mt-3">
-            test again
-          </Link>
+    <div>
+      <Header />
+      <div className="mb-4 mt-4">
+        <div className="d-flex align-items-top justify-content-center">
+          <div className="d-flex flex-column">{SessionListDisplay}</div>
+          <div className="text-center">
+            {selectedSession ? (
+              <div>
+                <WPM session={selectedSession} />
+                <Accuracy session={selectedSession} />
+                <RunningWPM session={selectedSession} />
+                <NGram session={selectedSession} />
+              </div>
+            ) : null}
+            <Link to="/" className="btn btn-success mt-3">
+              test again
+            </Link>
+          </div>
         </div>
       </div>
     </div>

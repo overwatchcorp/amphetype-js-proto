@@ -4,6 +4,7 @@ import words from "../corpra/english";
 import "../styles/Challenge.scss";
 import { Word, TypingEvent } from "../types";
 import { dumpSession } from "../analysis/sessionPostProcessing";
+import Header from "../components/Header";
 
 const tape = (words: Word[], targetIndex: number) => {
   return words.map((word, i): ReactElement => {
@@ -186,11 +187,14 @@ function Challenge() {
     ));
 
   return (
-    <div className="challenge">
-      <div className="btn-group mb-3">{testLengthButtons()}</div>
-      {complete ? <div>challenge complete!</div> : null}
-      <div className="tape-glue">
-        <div className="">{tapeInstance}</div>
+    <div>
+      <Header />
+      <div className="challenge">
+        <div className="btn-group mb-3">{testLengthButtons()}</div>
+        {complete ? <div>challenge complete!</div> : null}
+        <div className="tape-glue">
+          <div className="">{tapeInstance}</div>
+        </div>
       </div>
     </div>
   );
