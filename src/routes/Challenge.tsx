@@ -1,4 +1,5 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router";
 import words from "../corpra/english";
 import "../styles/Challenge.scss";
@@ -52,7 +53,7 @@ const generateString = (length: number): Word[] => {
   const initialString = testString.split(" ").map(
     (w, i): Word => ({
       target: w,
-      targetID: i,
+      targetID: uuidv4(),
       visibleHistory: "",
       history: [],
     })

@@ -11,7 +11,7 @@ interface NGramTarget {
 
 const transformIntoWords = (input: LongSessionRow[]): WordPerformance[] => {
   // create list of words w/ list of each words instance's targetID's
-  const targets: { [key: string]: number[] } = {};
+  const targets: { [key: string]: string[] } = {};
   // create separate array of words so we can easily iterate through
   const targetWords: string[] = [];
   input.forEach((row: LongSessionRow) => {

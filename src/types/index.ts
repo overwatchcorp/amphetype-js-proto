@@ -1,14 +1,16 @@
 export interface TypingEvent {
   key: string;
   // keep track of targetID so we can match instances of a word if there are multiple of the same
-  targetID: number;
+  // targetID is a UUID
+  targetID: string;
   correct: boolean;
   timestamp: number;
 }
 
 export interface Word {
   target: string;
-  targetID: number;
+  // targetID is a UUID
+  targetID: string;
   history: TypingEvent[];
   visibleHistory: string;
 }

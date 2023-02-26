@@ -39,7 +39,7 @@ export const sessionSchemaLiteral = {
             type: "string",
           },
           targetID: {
-            type: "number",
+            type: "string",
           },
           visibleHistory: {
             type: "string",
@@ -51,7 +51,7 @@ export const sessionSchemaLiteral = {
               type: "object",
               properties: {
                 targetID: {
-                  type: "number",
+                  type: "string",
                 },
                 key: {
                   type: "string",
