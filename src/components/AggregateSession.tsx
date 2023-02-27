@@ -46,12 +46,12 @@ const AggregateSession = ({ sessions }: { sessions: SessionType[] }) => {
     series: [
       {
         data: wpmSeq,
-        type: "line",
+        type: "scatter",
         name: "WPM",
       },
       {
         data: accSeq,
-        type: "line",
+        type: "scatter",
         name: "Accuracy",
       },
     ],

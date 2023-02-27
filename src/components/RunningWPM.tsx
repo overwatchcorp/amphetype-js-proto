@@ -25,8 +25,7 @@ const RunningWPM = ({
     series: [
       {
         data: runningWPM,
-        type: "line",
-        smooth: true,
+        type: "scatter",
         name: "WPM",
       },
     ],
