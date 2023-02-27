@@ -1,9 +1,11 @@
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router";
 import words from "../corpra/english";
 import "../styles/Challenge.scss";
 import { Word, TypingEvent } from "../types";
 import { dumpSession } from "../analysis/sessionPostProcessing";
+import Header from "../components/Header";
 
 const tape = (words: Word[], targetIndex: number) => {
   return words.map((word, i): ReactElement => {
@@ -51,7 +53,7 @@ const generateString = (length: number): Word[] => {
   const initialString = testString.split(" ").map(
     (w, i): Word => ({
       target: w,
-      targetID: i,
+      targetID: uuidv4(),
       visibleHistory: "",
       history: [],
     })
@@ -76,7 +78,7 @@ function Challenge() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (complete === true) navigate("/vis");
+    if (complete === true) navigate("/history");
   }, [complete, navigate]);
 
   const handleKeyDown = useCallback(
@@ -186,11 +188,14 @@ function Challenge() {
     ));
 
   return (
-    <div className="app">
-      <div className="btn-group mb-3">{testLengthButtons()}</div>
-      {complete ? <div>challenge complete!</div> : null}
-      <div className="tape-glue">
-        <div className="">{tapeInstance}</div>
+    <div>
+      <Header />
+      <div className="challenge">
+        <div className="btn-group mb-3">{testLengthButtons()}</div>
+        {complete ? <div>challenge complete!</div> : null}
+        <div className="tape-glue">
+          <div className="">{tapeInstance}</div>
+        </div>
       </div>
     </div>
   );
