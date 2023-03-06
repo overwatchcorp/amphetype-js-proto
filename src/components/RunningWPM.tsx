@@ -1,9 +1,13 @@
 import { ReactElement } from "react";
 import ECharts from "echarts-for-react";
-import { DataFrame } from "danfojs";
 import computeRunningWPM from "../analysis/computeRunningWPM";
+import { LongSessionRow } from "../types";
 
-const RunningWPM = ({ session }: { session: DataFrame }): ReactElement => {
+const RunningWPM = ({
+  session,
+}: {
+  session: LongSessionRow[];
+}): ReactElement => {
   // blah
   const runningWPM = computeRunningWPM(session);
   const options = {

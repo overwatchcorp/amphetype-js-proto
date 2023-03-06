@@ -1,7 +1,6 @@
-import { DataFrame } from "danfojs";
-import { Series } from "danfojs/dist/danfojs-base";
+import { tidy, mean, summarize, filter } from "@tidyjs/tidy";
 import computeNGram from "../analysis/computeNGram";
-import { nGramFeedback } from "../types";
+import { LongSessionRow, nGramFeedback } from "../types";
 
 interface ProcessedNGramData {
   nGram: string;
@@ -12,11 +11,14 @@ interface ProcessedNGramData {
 
 const processNGramData = (nGrams: nGramFeedback[]): ProcessedNGramData[] =>
   nGrams.map(({ nGram, performance }) => {
-    const meanDuration = Math.round(
-      new Series(performance.map(({ duration }) => duration)).mean()
-    );
-    const correctData = performance.flatMap(
-      ({ correct }) => correct.indexOf(false) <= -1
+    const meanDuration = tidy(
+      performance,
+      summarize({ meanDuration: mean("duration") })
+    )[0]["meanDuration"] as number;
+
+    const correctData = tidy(
+      performance,
+      filter(({ correct }) => correct.indexOf(false) <= -1)
     );
     const meanAccuracy =
       correctData.filter((e) => e).length / correctData.length;
@@ -42,12 +44,12 @@ const displayNGramData = (
       <tr>
         <th scope="row">{nGram}</th>
         <td>{nGramCount}</td>
-        <td>{meanDuration}ms</td>
+        <td>{Math.round(meanDuration)}ms</td>
         <td>{Math.round(meanAccuracy * 100)}%</td>
       </tr>
     ));
 
-const NGram = ({ session }: { session: DataFrame }) => {
+const NGram = ({ session }: { session: LongSessionRow[] }) => {
   const sortBy: NGramSortables = "nGramCount";
   const nRows = 10;
 

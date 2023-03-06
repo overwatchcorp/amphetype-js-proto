@@ -30,7 +30,7 @@ export interface WordPerformance {
     // array of whether the right key was pressed
     correct: boolean[];
     // array of timestamps so we can know how long the word took to type
-    timestamps: number[];
+    timestamp: number[];
   }[];
 }
 
